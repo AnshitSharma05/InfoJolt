@@ -11,8 +11,6 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/authSlice";
 import auth from "../assets/auth.jpg"
 
-const API_BASE_URL = "https://infojolt.onrender.com";
-
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -34,7 +32,7 @@ const Login = () => {
     console.log(input);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/v1/user/login`, input, {
+      const response = await axios.post(`https://infojolt.onrender.com/api/v1/user/login`, input, {
         headers: {
           "Content-Type": "application/json"
         },
