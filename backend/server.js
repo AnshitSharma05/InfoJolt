@@ -11,6 +11,23 @@ dotenv.config()
 const app = express()
 
 const PORT = process.env.PORT || 3000
+const REQUIRED_ENV_VARS = [
+    "MONGO_URI",
+    "SECRET_KEY",
+    "CLOUD_NAME",
+    "API_KEY",
+    "API_SECRET",
+];
+
+process.on("uncaughtException", (err) => {
+    console.error("Uncaught exception:", err);
+    process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled rejection:", reason);
+    process.exit(1);
+});
 // default middleware
 app.use(express.json());
 app.use(cookieParser());
@@ -30,12 +47,18 @@ app.get("/", (_, res) => {
 
 const startServer = async () => {
     try {
+        const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
+        if (missingVars.length) {
+            console.error(`Missing environment variables: ${missingVars.join(", ")}`);
+            process.exit(1);
+        }
+
         await connectDB();
         app.listen(PORT, () => {
             console.log(`Server listen at port ${PORT}`);
         });
     } catch (error) {
-        console.log("Failed to start server", error.message);
+        console.error("Failed to start server:", error);
         process.exit(1);
     }
 };
