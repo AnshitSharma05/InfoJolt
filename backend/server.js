@@ -45,22 +45,15 @@ app.get("/", (_, res) => {
     res.status(200).json({ success: true, message: "Backend is running" });
 });
 
-const startServer = async () => {
-    try {
-        const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
-        if (missingVars.length) {
-            console.error(`Missing environment variables: ${missingVars.join(", ")}`);
-            process.exit(1);
-        }
+const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
+if (missingVars.length) {
+    console.error(`Missing environment variables: ${missingVars.join(", ")}`);
+}
 
-        await connectDB();
-        app.listen(PORT, () => {
-            console.log(`Server listen at port ${PORT}`);
-        });
-    } catch (error) {
-        console.error("Failed to start server:", error);
-        process.exit(1);
-    }
-};
+app.listen(PORT, () => {
+    console.log(`Server listen at port ${PORT}`);
+});
 
-startServer();
+connectDB().catch((error) => {
+    console.error("MongoDB connection failed:", error?.message || error);
+});
