@@ -47,6 +47,8 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <><Navbar/><Profile /></>
   },
+
+
   // {
   //   path: "write-blog/:blogId",
   //       element: <><Navbar/><CreateBlog /></>
@@ -55,6 +57,8 @@ const router = createBrowserRouter([
   //   path: "/dashboard",
   //   element: <><Navbar/><Dashboard /></>
   // },
+
+
   {
     path:"/dashboard",
     element: <><Navbar/><ProtectedRoute><Dashboard/></ProtectedRoute></>,
