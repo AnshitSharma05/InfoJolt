@@ -31,7 +31,7 @@ const _dirname = path.resolve()
  app.use("/api/v1/comment", commentRoute)
 
  app.use(express.static(path.join(_dirname,"/frontend/dist")));
- app.get("*", (_, res)=>{
+ app.use((_, res)=>{
     res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
  });
 
