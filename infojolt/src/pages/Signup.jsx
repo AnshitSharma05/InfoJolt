@@ -9,7 +9,7 @@ import axios from 'axios'
 import { toast } from 'sonner'
 import auth from "../assets/auth.jpg"
 
-const API_BASE_URL = "https://infojolt.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://infojolt.onrender.com";
 
 const Signup = () => {
 
@@ -47,8 +47,12 @@ const Signup = () => {
                 toast.error(response.data.message)
             }
         } catch (error) {
-            console.log(error);
-            toast.error(error.response.data.message)
+            const message =
+                error?.response?.data?.message ||
+                error?.message ||
+                "Signup failed";
+            console.log("Signup error:", error);
+            toast.error(message)
 
 
         }

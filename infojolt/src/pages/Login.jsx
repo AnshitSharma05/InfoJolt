@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/authSlice";
 import auth from "../assets/auth.jpg"
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://infojolt.onrender.com";
+
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -32,7 +34,7 @@ const Login = () => {
     console.log(input);
 
     try {
-      const response = await axios.post(`https://infojolt.onrender.com/api/v1/user/login`, input, {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/user/login`, input, {
         headers: {
           "Content-Type": "application/json"
         },
@@ -44,7 +46,12 @@ const Login = () => {
         toast.success(response.data.message)
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Login failed";
+      console.log("Login error:", error);
+      toast.error(message);
 
     }
 

@@ -11,6 +11,7 @@ dotenv.config()
 const app = express()
 
 const PORT = process.env.PORT || 3000
+const CLIENT_URL = process.env.CLIENT_URL || "https://infojolt.onrender.com"
 
 
 // default middleware
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    origin: "https://infojolt.onrender.com",
+    origin: true,
     credentials:true
 }))
 
