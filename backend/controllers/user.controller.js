@@ -60,7 +60,7 @@ export const register = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Failed to register"
+            message: error?.message || "Failed to register"
         })
 
     }
@@ -107,7 +107,7 @@ export const login = async(req, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Failed to Login",           
+            message: error?.message || "Failed to Login",           
         })
     }
   

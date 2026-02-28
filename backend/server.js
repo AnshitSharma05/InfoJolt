@@ -11,9 +11,6 @@ dotenv.config()
 const app = express()
 
 const PORT = process.env.PORT || 3000
-const CLIENT_URL = process.env.CLIENT_URL || "https://infojolt.onrender.com"
-
-
 // default middleware
 app.use(express.json());
 app.use(cookieParser());
@@ -27,11 +24,20 @@ app.use(cors({
  app.use("/api/v1/user", userRoute)
  app.use("/api/v1/blog", blogRoute)
  app.use("/api/v1/comment", commentRoute)
- app.get("/", (_, res) => {
+app.get("/", (_, res) => {
     res.status(200).json({ success: true, message: "Backend is running" });
- });
+});
 
-app.listen(PORT, ()=>{
-    console.log(`Server listen at port ${PORT}`);
-    connectDB()
-})
+const startServer = async () => {
+    try {
+        await connectDB();
+        app.listen(PORT, () => {
+            console.log(`Server listen at port ${PORT}`);
+        });
+    } catch (error) {
+        console.log("Failed to start server", error.message);
+        process.exit(1);
+    }
+};
+
+startServer();
