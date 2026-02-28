@@ -28,15 +28,21 @@ const Profile = () => {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { user } = useSelector(store => store.auth)
+    const normalizeField = (value) => {
+        if (value === undefined || value === null) return "";
+        const text = String(value).trim();
+        if (!text || text.toLowerCase() === "undefined" || text.toLowerCase() === "null") return "";
+        return text;
+    };
     const [input, setInput] = useState({
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        occupation: user?.occupation,
-        bio: user?.bio,
-        facebook: user?.facebook,
-        linkedin: user?.linkedin,
-        github: user?.github,
-        instagram: user?.instagram,
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        occupation: user?.occupation || "",
+        bio: user?.bio || "",
+        facebook: user?.facebook || "",
+        linkedin: user?.linkedin || "",
+        github: user?.github || "",
+        instagram: user?.instagram || "",
         file: user?.photoUrl
     })
 
@@ -55,14 +61,21 @@ const Profile = () => {
     const submitHandler = async (e) => {
         e.preventDefault()
         const formData = new FormData();
-        formData.append("firstName", input.firstName);
-        formData.append("lastName", input.lastName);
-        formData.append("bio", input.bio);
-        formData.append("occupation", input.occupation);
-        formData.append("facebook", input.facebook);
-        formData.append("linkedin", input.linkedin);
-        formData.append("instagram", input.instagram);
-        formData.append("github", input.github);
+        const appendIfPresent = (key, value) => {
+            if (value === undefined || value === null) return;
+            const sanitized = String(value).trim();
+            if (!sanitized || sanitized.toLowerCase() === "undefined" || sanitized.toLowerCase() === "null") return;
+            formData.append(key, sanitized);
+        };
+
+        appendIfPresent("firstName", input.firstName);
+        appendIfPresent("lastName", input.lastName);
+        appendIfPresent("bio", input.bio);
+        appendIfPresent("occupation", input.occupation);
+        appendIfPresent("facebook", input.facebook);
+        appendIfPresent("linkedin", input.linkedin);
+        appendIfPresent("instagram", input.instagram);
+        appendIfPresent("github", input.github);
         if (input?.file) {
             formData.append("file", input?.file)
         }
@@ -98,7 +111,9 @@ const Profile = () => {
                         <Avatar className="w-40 h-40 border-2">
                             <AvatarImage src={user?.photoUrl || userLogo} />
                         </Avatar>
-                        <h1 className='text-center font-semibold text-xl text-gray-700 dark:text-gray-300 my-3'>{user?.occupation || "Mern Stack Developer"}</h1>
+                        <h1 className='text-center font-semibold text-xl text-gray-700 dark:text-gray-300 my-3'>
+                            {normalizeField(user?.occupation) || "Mern Stack Developer"}
+                        </h1>
                         <div className='flex gap-4 items-center'>
                             <Link ><FaFacebook className='w-6 h-6 text-gray-800 dark:text-gray-300' /></Link>
                             <Link to={`${user?.linkedin}`} target="_blank"><FaLinkedin className='w-6 h-6 dark:text-gray-300 text-gray-800' /></Link>
@@ -112,7 +127,7 @@ const Profile = () => {
                         <p className=''><span className='font-semibold'>Email : </span>{user?.email}</p>
                         <div className='flex flex-col gap-2 items-start justify-start my-5'>
                             <Label className="">About Me</Label>
-                            <p className='border dark:border-gray-600 p-6  rounded-lg'>{user?.bio || "I'm a passionate web developer and content creator focused on frontend technologies. When I'm not coding, you can find me writing about tech, hiking, or experimenting with new recipes."}</p>
+                            <p className='border dark:border-gray-600 p-6  rounded-lg'>{normalizeField(user?.bio) || "I'm a passionate web developer and content creator focused on frontend technologies. When I'm not coding, you can find me writing about tech, hiking, or experimenting with new recipes."}</p>
 
                         </div>
 
