@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import userLogo from "../assets/user.jpg"
+import userInfoJoltfrom "../assets/user.jpg"
 import { FaFacebook, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { Label } from '@/components/ui/label'
 import {

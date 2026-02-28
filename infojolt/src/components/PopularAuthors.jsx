@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import userLogo from "../assets/user.jpg"
+import userInfoJoltfrom "../assets/user.jpg"
 
 const PopularAuthors = () => {
     const [popularUser, setPopularUser] = useState([])

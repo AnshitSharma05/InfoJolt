@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
-import Logo from "../assets/logo.png"
+import InfoJoltfrom "../assets/logo.png"
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { setUser } from '@/redux/authSlice'
-import userLogo from "../assets/user.jpg"
+import userInfoJoltfrom "../assets/user.jpg"
 import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
 import {
     ChartColumnBig,
@@ -83,7 +83,7 @@ const Navbar = () => {
     return (
         <div className='py-2 fixed w-full dark:bg-gray-800 dark:border-b-gray-600 border-b-gray-300 border-2 bg-white z-50'>
             <div className='max-w-7xl mx-auto flex justify-between items-center px-4 md:px-0'>
-                {/* logo section */}
+                {/* InfoJoltsection */}
                 <div className='flex gap-7 items-center'>
                     <Link to={'/'}>
                         <div className='flex gap-2 items-center'>
