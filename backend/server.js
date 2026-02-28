@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    origin: "https://mern-blog-ha28.onrender.com",
+    origin: "https://infojolt.onrender.com",
     credentials:true
 }))
 
