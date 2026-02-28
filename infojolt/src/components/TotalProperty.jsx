@@ -61,7 +61,7 @@ const TotalProperty = () => {
         },
         {
           title: "Total Blogs",
-          value: blog.length,
+          value: Array.isArray(blog) ? blog.length : 0,
           icon: BarChart3,
           change: "+4%",
           trend: "up",
@@ -106,3 +106,4 @@ const TotalProperty = () => {
 }
 
 export default TotalProperty
+
