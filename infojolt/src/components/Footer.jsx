@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import InfoJoltfrom '../assets/logo.png'
+import Logo from '../assets/logo.png'
 import { FaFacebook, FaInstagram, FaPinterest, FaTwitterSquare } from 'react-icons/fa'
 
 const Footer = () => {
@@ -12,7 +12,7 @@ const Footer = () => {
             <Link to='/' className='flex gap-3 items-center'>
               {/* <img src={Logo} alt="" className='w-32'/> */}
               <img src={Logo} alt="" className='invert w-12 h-12'/>
-              <h1 className=' text-3xl font-bold'>Logo</h1>
+              <h1 className=' text-3xl font-bold'>InfoJolt</h1>
             </Link>
             <p className='mt-2'>Sharing insights, tutorials, and ideas on web development and tech.</p>
             <p className='mt-2 text-sm'>123 Blog St, Style City, NY 10001</p>
@@ -63,3 +63,4 @@ const Footer = () => {
 }
 
 export default Footer
+

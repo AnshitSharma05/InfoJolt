@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import userInfoJoltfrom "../assets/user.jpg"
+import userLogo from "../assets/user.jpg"
 import { FaFacebook, FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { Label } from '@/components/ui/label'
 import {
@@ -69,7 +69,7 @@ const Profile = () => {
 
         try {
             setLoading(true)
-            const res = await axios.put(`https://mern-blog-ha28.onrender.com/api/v1/user/profile/update`, formData, {
+            const res = await axios.put(`https://infojolt.onrender.com/api/v1/user/profile/update`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
@@ -246,3 +246,5 @@ const Profile = () => {
 }
 
 export default Profile
+
+
