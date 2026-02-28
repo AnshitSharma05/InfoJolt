@@ -9,6 +9,8 @@ import axios from 'axios'
 import { toast } from 'sonner'
 import auth from "../assets/auth.jpg"
 
+const API_BASE_URL = "https://infojolt.onrender.com";
+
 const Signup = () => {
 
     const navigate = useNavigate()
@@ -32,7 +34,7 @@ const Signup = () => {
         console.log(user)
 
         try {
-            const response = await axios.post(`https://mern-blog-ha28.onrender.com/api/v1/user/register`, user, {
+            const response = await axios.post(`${API_BASE_URL}/api/v1/user/register`, user, {
                 headers: {
                     "Content-Type": "application/json",
                 },
