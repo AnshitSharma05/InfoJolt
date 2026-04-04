@@ -13,7 +13,7 @@ const BlogCard = ({blog}) => {
                 By {blog.author.firstName} | {blog.category} | {formattedDate}
             </p>
             <h2 className="text-xl font-semibold  mt-1">{blog.title}</h2>
-            <h3 className='text-gray-500 mt-1'>{blog.subtitle}</h3>
+            <h3 className='text-gray-500 mt-1'>{blog.subtitle !== 'undefined' ? blog.subtitle : ''}</h3>
             {/* <p className=" mt-3">{blog.description.substring(0, 100)}...</p> */}
             {/* <div className="mt-3 flex flex-wrap gap-2">
                 {blog.tags.map((tag, index) => (

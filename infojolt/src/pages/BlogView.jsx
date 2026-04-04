@@ -36,7 +36,7 @@ const BlogView = () => {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`https://infojolt.onrender.com/api/v1/blog/${selectedBlog?._id}/${action}`, { withCredentials: true })
+            const res = await axios.get(`http://localhost:8000/api/v1/blog/${selectedBlog?._id}/${action}`, { withCredentials: true })
             if (res.data.success) {
                 const updatedLikes = liked ? blogLike - 1 : blogLike + 1;
                 setBlogLike(updatedLikes);
@@ -175,9 +175,6 @@ const BlogView = () => {
                             </Button>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <Button variant="ghost" size="sm">
-                                <Bookmark className="h-4 w-4" />
-                            </Button>
                             <Button onClick={()=>handleShare(selectedBlog._id)} variant="ghost" size="sm">
                                 <Share2 className="h-4 w-4" />
                             </Button>

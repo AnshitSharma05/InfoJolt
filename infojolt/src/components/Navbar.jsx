@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
@@ -53,10 +53,10 @@ const Navbar = () => {
     const dispatch = useDispatch()
     // const user = false;
 
-    const logoutHandler = async (e) => {
+    const logoutHandler = async () => {
 
         try {
-            const res = await axios.get(`https://infojolt.onrender.com/api/v1/user/logout`, { withCredentials: true });
+            const res = await axios.get(`http://localhost:8000/api/v1/user/logout`, { withCredentials: true });
             if (res.data.success) {
                 navigate("/")
                 dispatch(setUser(null))
@@ -133,29 +133,29 @@ const Navbar = () => {
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/profile')}>
                                                 <User />
                                                 <span>Profile</span>
-                                                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                                <DropdownMenuShortcut>â‡§âŒ˜P</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/your-blog')}>
                                                 <ChartColumnBig />
                                                 <span>Your Blog</span>
-                                                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/comments')}>
                                                 <LiaCommentSolid />
                                                 <span>Comments</span>
-                                                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/write-blog')}>
                                                 <FaRegEdit />
                                                 <span>Write Blog</span>
-                                                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={logoutHandler}>
                                             <LogOut />
                                             <span>Log out</span>
-                                            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                                            <DropdownMenuShortcut>â‡§âŒ˜Q</DropdownMenuShortcut>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>

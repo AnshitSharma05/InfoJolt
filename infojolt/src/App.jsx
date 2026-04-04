@@ -20,19 +20,19 @@ import SearchList from './pages/SearchList'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <><Navbar/><Home /><Footer/></>
+    element: <><Navbar/><Home /></>
   },
   {
     path: "/blogs",
-    element: <><Navbar/><Blog /><Footer/></>
+    element: <><Navbar/><Blog /></>
   },
   {
     path: "/about",
-    element: <><Navbar/><About /><Footer/></>
+    element: <><Navbar/><About /></>
   },
   {
     path: "/search",
-    element: <><Navbar/><SearchList/><Footer/></>
+    element: <><Navbar/><SearchList/></>
   },
   {
     path: "/blogs/:blogId",

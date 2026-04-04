@@ -50,7 +50,10 @@ export const updateBlog = async (req, res) => {
             thumbnail = await cloudinary.uploader.upload(fileUri)
         }
 
-        const updateData = {title, subtitle, description, category,author: req.id, thumbnail: thumbnail?.secure_url};
+        const updateData = {title, subtitle, description, category,author: req.id};
+        if (thumbnail) {
+            updateData.thumbnail = thumbnail.secure_url;
+        }
         blog = await Blog.findByIdAndUpdate(blogId, updateData, {new:true});
 
         res.status(200).json({ success: true, message: "Blog updated successfully", blog });

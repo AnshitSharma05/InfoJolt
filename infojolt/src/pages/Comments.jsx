@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/card'
+﻿import { Card } from '@/components/ui/card'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import axios from 'axios'
 import { Edit, Eye, Trash2 } from 'lucide-react'
@@ -10,7 +10,7 @@ const Comments = () => {
     const navigate = useNavigate()
     const getTotalComments = async()=>{
         try {
-          const res = await axios.get(`https://infojolt.onrender.com/api/v1/comment/my-blogs/comments`,{withCredentials:true})
+          const res = await axios.get(`http://localhost:8000/api/v1/comment/my-blogs/comments`,{withCredentials:true})
           if(res.data.success){
             setAllComments(res.data.comments)
           }
@@ -20,6 +20,7 @@ const Comments = () => {
         }
     }
     useEffect(()=>{
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         getTotalComments()
     },[])
     console.log(allComments);

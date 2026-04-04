@@ -5,7 +5,7 @@ import PopularAuthors from '@/components/PopularAuthors'
 
 const Home = () => {
   return (
-    <div className='pt-20'>
+    <div className='pt-20 min-h-screen bg-white dark:bg-[#09090b]'>
       <Hero/>
       <RecentBlog/>
       <PopularAuthors/>

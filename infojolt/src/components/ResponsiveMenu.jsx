@@ -1,9 +1,8 @@
-import React from 'react'
+﻿import React from 'react'
 import { FaUserCircle } from "react-icons/fa";
 import { FaChevronRight } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import userLogo from "../assets/user.jpg"
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useSelector } from 'react-redux';
 
@@ -39,7 +38,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
             </div>
             <div className='pb-20'>
                 <h1>
-                    Made with ❤️ by Anshit Sharma
+                    Made with â¤ï¸ by Anshit Sharma
                 </h1>
             </div>
         </div>

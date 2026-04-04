@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+﻿import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from '@/components/ui/input'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Textarea } from '@/components/ui/textarea'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
@@ -82,7 +82,7 @@ const Profile = () => {
 
         try {
             setLoading(true)
-            const res = await axios.put(`https://infojolt.onrender.com/api/v1/user/profile/update`, formData, {
+            const res = await axios.put(`http://localhost:8000/api/v1/user/profile/update`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },

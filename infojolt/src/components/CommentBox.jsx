@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Textarea } from './ui/textarea'
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
@@ -53,7 +53,7 @@ const CommentBox = ({ selectedBlog }) => {
     useEffect(() => {
         const getAllCommentsOfBlog = async () => {
             try {
-                const res = await axios.get(`https://infojolt.onrender.com/api/v1/comment/${selectedBlog._id}/comment/all`)
+                const res = await axios.get(`http://localhost:8000/api/v1/comment/${selectedBlog._id}/comment/all`)
                 const data = res.data.comments
                 dispatch(setComment(data))
             } catch (error) {
@@ -66,7 +66,7 @@ const CommentBox = ({ selectedBlog }) => {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`https://infojolt.onrender.com/api/v1/comment/${selectedBlog._id}/create`, { content }, {
+            const res = await axios.post(`http://localhost:8000/api/v1/comment/${selectedBlog._id}/create`, { content }, {
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -99,7 +99,7 @@ const CommentBox = ({ selectedBlog }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            const res = await axios.delete(`https://infojolt.onrender.com/api/v1/comment/${commentId}/delete`, {
+            const res = await axios.delete(`http://localhost:8000/api/v1/comment/${commentId}/delete`, {
                 withCredentials: true
             })
             if (res.data.success) {
@@ -119,7 +119,7 @@ const CommentBox = ({ selectedBlog }) => {
     const editCommentHandler = async (commentId) => {
         try {
             const res = await axios.put(
-                `https://infojolt.onrender.com/api/v1/comment/${commentId}/edit`,
+                `http://localhost:8000/api/v1/comment/${commentId}/edit`,
                 { content: editedContent },
                 {
                     withCredentials: true,
@@ -147,7 +147,7 @@ const CommentBox = ({ selectedBlog }) => {
      const likeCommentHandler = async (commentId) => {
          try {
              const res = await axios.get(
-                 `https://infojolt.onrender.com/api/v1/comment/${commentId}/like`,
+                 `http://localhost:8000/api/v1/comment/${commentId}/like`,
                  {
                      withCredentials: true,
                  }

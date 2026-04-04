@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setBlog } from '@/redux/blogSlice'
 // import BlogCardList from '@/components/BlogCardList'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const blogJson = [
     {
         "id": 1,
@@ -49,7 +50,7 @@ export const blogJson = [
     },
     {
         "id": 5,
-        "title": "Search Engine Optimization: The Complete Beginner’s Guide",
+        "title": "Search Engine Optimization: The Complete Beginnerâ€™s Guide",
         "author": "Anshit Sharma",
         "date": "2025-03-27",
         "content": "SEO is vital for ranking higher on Google. This guide explains keyword research, on-page and off-page SEO, technical SEO, and the latest trends.",
@@ -68,7 +69,7 @@ const Blog = () => {
     useEffect(() => {
         const getAllPublsihedBlogs = async () => {
             try {
-                const res = await axios.get(`https://infojolt.onrender.com/api/v1/blog/get-published-blogs`, { withCredentials: true })
+                const res = await axios.get(`http://localhost:8000/api/v1/blog/get-all-blogs`, { withCredentials: true })
                 if (res.data.success) {
                     dispatch(setBlog(res.data.blogs))
                 }
@@ -81,7 +82,7 @@ const Blog = () => {
     },[])
 
     return (
-        <div className='pt-16'>
+        <div className='pt-16 min-h-screen bg-gray-100 dark:bg-gray-800'>
             <div className='max-w-6xl mx-auto text-center flex flex-col space-y-4 items-center'>
                 <h1 className='text-4xl font-bold text-center pt-10 '>Our Blogs</h1>
                 <hr className=' w-24 text-center border-2 border-red-500 rounded-full' />

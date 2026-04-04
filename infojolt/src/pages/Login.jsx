@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/authSlice";
 import auth from "../assets/auth.jpg"
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://infojolt.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const Login = () => {
   const navigate = useNavigate()

@@ -65,14 +65,16 @@ const UpdateBlog = () => {
     const updateBlogHandler = async () => {
 
         const formData = new FormData();
-        formData.append("title", blogData.title);
-        formData.append("subtitle", blogData.subtitle);
-        formData.append("description", content);
-        formData.append("category", blogData.category);
-        formData.append("file", blogData.thumbnail);
+        formData.append("title", blogData.title || "");
+        formData.append("subtitle", blogData.subtitle || "");
+        formData.append("description", content || "");
+        formData.append("category", blogData.category || "");
+        if (blogData.thumbnail) {
+            formData.append("file", blogData.thumbnail);
+        }
         try {
             setLoading(true)
-            const res = await axios.put(`https://infojolt.onrender.com/api/v1/blog/${id}`, formData, {
+            const res = await axios.put(`http://localhost:8000/api/v1/blog/${id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
@@ -97,10 +99,7 @@ const UpdateBlog = () => {
         console.log("action", action);
 
         try {
-            const res = await axios.patch(`https://infojolt.onrender.com/api/v1/blog/${id}`, {
-                params: {
-                    action
-                },
+            const res = await axios.patch(`http://localhost:8000/api/v1/blog/${id}?publish=${action}`, {}, {
                 withCredentials: true
             })
             if (res.data.success) {
@@ -118,7 +117,7 @@ const UpdateBlog = () => {
 
     const deleteBlog = async () => {
         try {
-            const res = await axios.delete(`https://infojolt.onrender.com/api/v1/blog/delete/${id}`, { withCredentials: true })
+            const res = await axios.delete(`http://localhost:8000/api/v1/blog/delete/${id}`, { withCredentials: true })
             if (res.data.success) {
                 const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
                 dispatch(setBlog(updatedBlogData))

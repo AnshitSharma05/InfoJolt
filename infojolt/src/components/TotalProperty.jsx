@@ -1,4 +1,4 @@
-import { BarChart3, Eye, MessageSquare, ThumbsUp } from 'lucide-react'
+import { BarChart3, MessageSquare, ThumbsUp } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,7 +13,7 @@ const TotalProperty = () => {
 
     const getOwnBlog = async () => {
         try {
-            const res = await axios.get(`https://infojolt.onrender.com/api/v1/blog/get-own-blogs`, { withCredentials: true })
+            const res = await axios.get(`http://localhost:8000/api/v1/blog/get-own-blogs`, { withCredentials: true })
             if (res.data.success) {
                 dispatch(setBlog(res.data.blogs))
             }
@@ -24,7 +24,7 @@ const TotalProperty = () => {
     }
     const getTotalComments = async()=>{
         try {
-          const res = await axios.get(`https://infojolt.onrender.com/api/v1/comment/my-blogs/comments`,{withCredentials:true})
+          const res = await axios.get(`http://localhost:8000/api/v1/comment/my-blogs/comments`,{withCredentials:true})
           if(res.data.success){
              setTotalComments(res.data.totalComments)
           }
@@ -36,7 +36,7 @@ const TotalProperty = () => {
 
     const getTotalLikes = async()=>{
       try {
-        const res = await axios.get(`https://infojolt.onrender.com/api/v1/blog/my-blogs/likes`,{withCredentials:true})
+        const res = await axios.get(`http://localhost:8000/api/v1/blog/my-blogs/likes`,{withCredentials:true})
         if(res.data.success){
            setTotalLikes(res.data.totalLikes)
         }
@@ -47,18 +47,13 @@ const TotalProperty = () => {
     }
     useEffect(()=>{
         getOwnBlog()
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         getTotalComments()
         getTotalLikes()
     },[])
 
     const stats = [
-        {
-          title: "Total Views",
-          value: "24.8K",
-          icon: Eye,
-          change: "+12%",
-          trend: "up",
-        },
+
         {
           title: "Total Blogs",
           value: Array.isArray(blog) ? blog.length : 0,
@@ -93,9 +88,7 @@ const TotalProperty = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
-            <p className={`text-xs ${stat.trend === "up" ? "text-green-500" : "text-red-500"}`}>
-              {stat.change} from last month
-            </p>
+
           </CardContent>
         </Card>
       ))}
