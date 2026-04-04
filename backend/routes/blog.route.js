@@ -2,11 +2,12 @@ import express from "express"
 
 import { isAuthenticated } from "../middleware/isAuthenticated.js"
 import { singleUpload } from "../middleware/multer.js"
-import {createBlog, deleteBlog, dislikeBlog, getAllBlogs, getMyTotalBlogLikes, getOwnBlogs, getPublishedBlog, likeBlog, togglePublishBlog, updateBlog } from "../controllers/blog.controller.js"
+import {createBlog, deleteBlog, dislikeBlog, getAllBlogs, getMyTotalBlogLikes, getOwnBlogs, getPublishedBlog, likeBlog, togglePublishBlog, updateBlog, aiCorrectBlog } from "../controllers/blog.controller.js"
 
 const router = express.Router()
 
 router.route("/").post(isAuthenticated, createBlog)
+router.route("/ai-correct").post(isAuthenticated, aiCorrectBlog)
 router.route("/:blogId").put(isAuthenticated, singleUpload, updateBlog)
 router.route("/:blogId").patch(togglePublishBlog);
 router.route("/get-all-blogs").get(getAllBlogs)

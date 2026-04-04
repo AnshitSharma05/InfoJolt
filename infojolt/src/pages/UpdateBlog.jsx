@@ -12,6 +12,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button'
+import { Sparkles } from 'lucide-react'
 import JoditEditor from 'jodit-react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +24,7 @@ const UpdateBlog = () => {
     const editor = useRef(null);
    
     const [loading, setLoading] = useState(false)
+    const [aiLoading, setAiLoading] = useState(false)
     const [publish, setPublish] = useState(false)
     const params = useParams()
     const id = params.blogId
@@ -115,6 +117,31 @@ const UpdateBlog = () => {
         }
     }
 
+    const handleAiCorrect = async () => {
+        if (!blogData.title && !content) {
+            toast.error("Please provide title and description to correct");
+            return;
+        }
+        try {
+            setAiLoading(true);
+            const res = await axios.post(`http://localhost:8000/api/v1/blog/ai-correct`, {
+                title: blogData.title,
+                description: content
+            }, { withCredentials: true });
+
+            if (res.data.success) {
+                setBlogData(prev => ({ ...prev, title: res.data.title }));
+                setContent(res.data.description);
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Failed to run AI corrector");
+        } finally {
+            setAiLoading(false);
+        }
+    }
+
     const deleteBlog = async () => {
         try {
             const res = await axios.delete(`http://localhost:8000/api/v1/blog/delete/${id}`, { withCredentials: true })
@@ -158,7 +185,7 @@ const UpdateBlog = () => {
                         <Label>Description</Label>
                         <JoditEditor
                             ref={editor}
-                            value={blogData.description}
+                            value={content}
                             onChange={newContent => setContent(newContent)}
                             className="jodit_toolbar"
 
@@ -201,6 +228,10 @@ const UpdateBlog = () => {
                     </div>
                     <div className='flex gap-3'>
                         <Button variant="outline" onClick={()=>navigate(-1)}>Back</Button>
+                        <Button variant="outline" type="button" onClick={handleAiCorrect} disabled={aiLoading} className="flex gap-2">
+                            <Sparkles size={16} />
+                            {aiLoading ? "Correcting..." : "AI Correct"}
+                        </Button>
                         <Button onClick={updateBlogHandler}>
                             {
                                 loading ? "Please Wait" : "Save"

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
@@ -133,29 +133,24 @@ const Navbar = () => {
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/profile')}>
                                                 <User />
                                                 <span>Profile</span>
-                                                <DropdownMenuShortcut>â‡§âŒ˜P</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/your-blog')}>
                                                 <ChartColumnBig />
                                                 <span>Your Blog</span>
-                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/comments')}>
                                                 <LiaCommentSolid />
                                                 <span>Comments</span>
-                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => navigate('/dashboard/write-blog')}>
                                                 <FaRegEdit />
                                                 <span>Write Blog</span>
-                                                <DropdownMenuShortcut>âŒ˜B</DropdownMenuShortcut>
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem onClick={logoutHandler}>
                                             <LogOut />
                                             <span>Log out</span>
-                                            <DropdownMenuShortcut>â‡§âŒ˜Q</DropdownMenuShortcut>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>

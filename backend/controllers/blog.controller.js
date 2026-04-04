@@ -1,4 +1,5 @@
 import { Blog } from "../models/blog.model.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import Comment from "../models/comment.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/dataUri.js";
@@ -257,3 +258,35 @@ export const getMyTotalBlogLikes = async (req, res) => {
       });
     }
   };
+
+export const aiCorrectBlog = async (req, res) => {
+    try {
+        const { title, description } = req.body;
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ success: false, message: "Gemini API key is missing from environment variables (.env)." });
+        }
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const prompt = `Correct grammatical and spelling errors in the following title and HTML content. Do NOT rewrite the whole blog, ONLY correct grammar and spelling mistakes. Keep all HTML tags exactly as they are. Return a strictly valid JSON object with exactly two keys: "title" (the corrected title) and "description" (the corrected HTML content). 
+Title to correct: ${title}
+Content to correct: ${description}`;
+
+        const result = await model.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        });
+        let text = result.response.text();
+        text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+        const corrected = JSON.parse(text);
+
+        res.status(200).json({
+            success: true,
+            title: corrected.title,
+            description: corrected.description,
+            message: "Corrected successfully using AI!"
+        });
+    } catch (error) {
+        console.error("AI correction error:", error);
+        res.status(500).json({ success: false, message: "Failed to correct content using AI: " + error.message });
+    }
+};
