@@ -43,6 +43,7 @@ import { FaEdit, FaMoon, FaRegEdit, FaSun } from 'react-icons/fa'
 import { toggleTheme } from '@/redux/themeSlice'
 import { LiaCommentSolid } from 'react-icons/lia'
 import ResponsiveMenu from './ResponsiveMenu'
+import { API_BASE_URL } from '@/config/api'
 
 const Navbar = () => {
     const { user } = useSelector(store => store.auth)
@@ -56,7 +57,7 @@ const Navbar = () => {
     const logoutHandler = async () => {
 
         try {
-            const res = await axios.get(`http://localhost:8000/api/v1/user/logout`, { withCredentials: true });
+            const res = await axios.get(`${API_BASE_URL}/api/v1/user/logout`, { withCredentials: true });
             if (res.data.success) {
                 navigate("/")
                 dispatch(setUser(null))

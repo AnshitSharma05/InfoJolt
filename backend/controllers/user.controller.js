@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "../utils/cloudinary.js";
+import { authCookieOptions } from "../utils/authCookie.js";
 
 
 export const register = async (req, res) => {
@@ -93,15 +94,11 @@ export const login = async(req, res) => {
         }
         
         const token = await jwt.sign({userId:user._id}, process.env.SECRET_KEY, { expiresIn: '1d' })
-        return res.status(200).cookie("token", token, {
-            maxAge: 1 * 24 * 60 * 60 * 1000,
-            httpOnly: true,
-            secure: true,
-            sameSite: "none"
-        }).json({
+        const userSafe = await User.findById(user._id).select("-password")
+        return res.status(200).cookie("token", token, authCookieOptions(1 * 24 * 60 * 60 * 1000)).json({
             success:true,
             message:`Welcome back ${user.firstName}`,
-            user
+            user: userSafe
         })
     } catch (error) {
         console.log(error);
@@ -113,9 +110,31 @@ export const login = async(req, res) => {
   
 }
 
+export const getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.id).select("-password");
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            user,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch user",
+        });
+    }
+};
+
 export const logout = async (_, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+        return res.status(200).cookie("token", "", { ...authCookieOptions(0), maxAge: 0 }).json({
             message: "Logged out successfully.",
             success: true
         })

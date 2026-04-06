@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { toast } from 'sonner'
 import { setBlog } from '@/redux/blogSlice'
+import { API_BASE_URL } from '@/config/api'
 
 const UpdateBlog = () => {
     const editor = useRef(null);
@@ -76,7 +77,7 @@ const UpdateBlog = () => {
         }
         try {
             setLoading(true)
-            const res = await axios.put(`http://localhost:8000/api/v1/blog/${id}`, formData, {
+            const res = await axios.put(`${API_BASE_URL}/api/v1/blog/${id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
@@ -101,7 +102,7 @@ const UpdateBlog = () => {
         console.log("action", action);
 
         try {
-            const res = await axios.patch(`http://localhost:8000/api/v1/blog/${id}?publish=${action}`, {}, {
+            const res = await axios.patch(`${API_BASE_URL}/api/v1/blog/${id}?publish=${action}`, {}, {
                 withCredentials: true
             })
             if (res.data.success) {
@@ -124,7 +125,7 @@ const UpdateBlog = () => {
         }
         try {
             setAiLoading(true);
-            const res = await axios.post(`http://localhost:8000/api/v1/blog/ai-correct`, {
+            const res = await axios.post(`${API_BASE_URL}/api/v1/blog/ai-correct`, {
                 title: blogData.title,
                 description: content
             }, { withCredentials: true });
@@ -144,7 +145,7 @@ const UpdateBlog = () => {
 
     const deleteBlog = async () => {
         try {
-            const res = await axios.delete(`http://localhost:8000/api/v1/blog/delete/${id}`, { withCredentials: true })
+            const res = await axios.delete(`${API_BASE_URL}/api/v1/blog/delete/${id}`, { withCredentials: true })
             if (res.data.success) {
                 const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
                 dispatch(setBlog(updatedBlogData))

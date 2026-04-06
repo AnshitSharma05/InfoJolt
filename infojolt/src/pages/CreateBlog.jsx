@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { API_BASE_URL } from '@/config/api'
 
 const CreateBlog = () => {
     const [loading, setLoading] = useState(false)
@@ -25,7 +26,7 @@ const CreateBlog = () => {
         
         try {
             setLoading(true)
-            const res = await axios.post(`http://localhost:8000/api/v1/blog/`, { title, category }, {
+            const res = await axios.post(`${API_BASE_URL}/api/v1/blog/`, { title, category }, {
                 headers: {
                     "Content-Type": "application/json",
                 },

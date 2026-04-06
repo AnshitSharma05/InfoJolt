@@ -20,6 +20,7 @@ import axios from 'axios'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
 import { setBlog } from '@/redux/blogSlice'
 import { toast } from 'sonner'
+import { API_BASE_URL } from '@/config/api'
 
 const BlogView = () => {
     const params = useParams()
@@ -36,7 +37,7 @@ const BlogView = () => {
     const likeOrDislikeHandler = async () => {
         try {
             const action = liked ? 'dislike' : 'like';
-            const res = await axios.get(`http://localhost:8000/api/v1/blog/${selectedBlog?._id}/${action}`, { withCredentials: true })
+            const res = await axios.get(`${API_BASE_URL}/api/v1/blog/${selectedBlog?._id}/${action}`, { withCredentials: true })
             if (res.data.success) {
                 const updatedLikes = liked ? blogLike - 1 : blogLike + 1;
                 setBlogLike(updatedLikes);

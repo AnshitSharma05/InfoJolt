@@ -15,6 +15,8 @@ import About from './pages/About'
 import Comments from './pages/Comments'
 import UpdateBlog from './pages/UpdateBlog'
 import ProtectedRoute from './components/ProtectedRoute'
+import GuestRoute from './components/GuestRoute'
+import AuthBootstrap from './components/AuthBootstrap'
 import SearchList from './pages/SearchList'
 
 const router = createBrowserRouter([
@@ -36,16 +38,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/blogs/:blogId",
-    element: <><Navbar/><ProtectedRoute><BlogView /></ProtectedRoute></>
+    element: <><Navbar/><BlogView /></>
   },
   {
     path: "/write-blog",
-    element: <><Navbar/><CreateBlog /></>
+    element: <><Navbar/><ProtectedRoute><CreateBlog /></ProtectedRoute></>
   },
  
   {
     path: "/profile",
-    element: <><Navbar/><Profile /></>
+    element: <><Navbar/><ProtectedRoute><Profile /></ProtectedRoute></>
   },
 
 
@@ -89,17 +91,18 @@ const router = createBrowserRouter([
    },
   {
     path: "/signup",
-    element: <><Navbar/><Signup /></> 
+    element: <><Navbar/><GuestRoute><Signup /></GuestRoute></> 
   },
   {
     path: "/login",
-    element: <><Navbar/><Login /></>
+    element: <><Navbar/><GuestRoute><Login /></GuestRoute></>
   },
 ])
 
 const App = () => {
   return (
     <>
+      <AuthBootstrap />
       <RouterProvider router={router} />
     </>
   )

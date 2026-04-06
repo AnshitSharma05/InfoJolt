@@ -1,4 +1,4 @@
-﻿import { Card } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import React, { useEffect } from 'react'
 import {
     Table,
@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { API_BASE_URL } from '@/config/api'
 
 // const invoices = [
 //     {
@@ -73,7 +74,7 @@ const YourBlog = () => {
 
     const getOwnBlog = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/v1/blog/get-own-blogs`, { withCredentials: true })
+            const res = await axios.get(`${API_BASE_URL}/api/v1/blog/get-own-blogs`, { withCredentials: true })
             if (res.data.success) {
                 dispatch(setBlog(res.data.blogs))
             }
@@ -84,7 +85,7 @@ const YourBlog = () => {
     }
     const deleteBlog = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:8000/api/v1/blog/delete/${id}`, { withCredentials: true })
+            const res = await axios.delete(`${API_BASE_URL}/api/v1/blog/delete/${id}`, { withCredentials: true })
             if (res.data.success) {
                 const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
                 dispatch(setBlog(updatedBlogData))

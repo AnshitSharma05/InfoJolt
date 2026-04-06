@@ -1,20 +1,20 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/authSlice";
 import auth from "../assets/auth.jpg"
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from "@/config/api";
 
 const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useDispatch()
   const [input, setInput] = useState({
     email: "",
@@ -41,7 +41,8 @@ const Login = () => {
         withCredentials: true
       });
       if (response.data.success) {
-        navigate('/')
+        const redirectTo = location.state?.from?.pathname || "/";
+        navigate(redirectTo, { replace: true })
         dispatch(setUser(response.data.user))
         toast.success(response.data.message)
       }

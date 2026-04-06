@@ -1,4 +1,4 @@
-﻿import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,6 +22,7 @@ import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { setUser } from '@/redux/authSlice'
 import TotalProperty from '@/components/TotalProperty'
+import { API_BASE_URL } from '@/config/api'
 
 const Profile = () => {
     const dispatch = useDispatch()
@@ -82,7 +83,7 @@ const Profile = () => {
 
         try {
             setLoading(true)
-            const res = await axios.put(`http://localhost:8000/api/v1/user/profile/update`, formData, {
+            const res = await axios.put(`${API_BASE_URL}/api/v1/user/profile/update`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },

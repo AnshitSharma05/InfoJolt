@@ -4,6 +4,7 @@ import LMS from "../assets/LMS.png"
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBlog } from '@/redux/blogSlice'
+import { API_BASE_URL } from '@/config/api'
 // import BlogCardList from '@/components/BlogCardList'
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -69,7 +70,7 @@ const Blog = () => {
     useEffect(() => {
         const getAllPublsihedBlogs = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/api/v1/blog/get-all-blogs`, { withCredentials: true })
+                const res = await axios.get(`${API_BASE_URL}/api/v1/blog/get-all-blogs`, { withCredentials: true })
                 if (res.data.success) {
                     dispatch(setBlog(res.data.blogs))
                 }

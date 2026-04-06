@@ -1,11 +1,9 @@
-import React from "react";
 import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
+const GuestRoute = ({ children }) => {
   const { user, sessionChecked } = useSelector((store) => store.auth);
-  const location = useLocation();
 
   if (!sessionChecked) {
     return (
@@ -15,11 +13,11 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (user) {
+    return <Navigate to="/" replace />;
   }
 
   return children;
 };
 
-export default ProtectedRoute;
+export default GuestRoute;
