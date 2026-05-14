@@ -21,7 +21,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav, logoutHandler }) => {
                     
                     <div>
                         <h1 className=''>Hello, {user?.firstName || "User"}</h1>
-                        <h1 className='text-sm text-slate-500'>Premium User</h1>
+                        <h1 className='text-sm text-slate-500'>User</h1>
                     </div>
                 </div>
                 <nav className='mt-12'>
