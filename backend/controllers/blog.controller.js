@@ -75,7 +75,7 @@ export const getAllBlogs = async (_, res) => {
                 path: 'userId',
                 select: 'firstName lastName photoUrl'
             }
-        });
+        }).lean();
         res.status(200).json({ success: true, blogs });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error fetching blogs", error: error.message });
@@ -91,7 +91,7 @@ export const getPublishedBlog = async (_,res) => {
                 path: 'userId',
                 select: 'firstName lastName photoUrl'
             }
-        });
+        }).lean();
         if(!blogs){
             return res.status(404).json({
                 message:"Blog not found"
@@ -156,7 +156,7 @@ export const getOwnBlogs = async (req, res) => {
                 path: 'userId',
                 select: 'firstName lastName photoUrl'
             }
-        });;
+        }).lean();
 
         if (!blogs) {
             return res.status(404).json({ message: "No blogs found.", blogs: [], success: false });
@@ -181,11 +181,11 @@ export const deleteBlog = async (req, res) => {
             return res.status(403).json({ success: false, message: 'Unauthorized to delete this blog' });
         }
 
-        // Delete blog
-        await Blog.findByIdAndDelete(blogId);
-
-        // Delete related comments
-        await Comment.deleteMany({ postId: blogId });
+        // Delete blog and related comments concurrently
+        await Promise.all([
+            Blog.findByIdAndDelete(blogId),
+            Comment.deleteMany({ postId: blogId })
+        ]);
 
 
         res.status(200).json({ success: true, message: "Blog deleted successfully" });
@@ -240,7 +240,7 @@ export const getMyTotalBlogLikes = async (req, res) => {
       const userId = req.id; // assuming you use authentication middleware
   
       // Step 1: Find all blogs authored by the logged-in user
-      const myBlogs = await Blog.find({ author: userId }).select("likes");
+      const myBlogs = await Blog.find({ author: userId }).select("likes").lean();
   
       // Step 2: Sum up the total likes
       const totalLikes = myBlogs.reduce((acc, blog) => acc + (blog.likes?.length || 0), 0);

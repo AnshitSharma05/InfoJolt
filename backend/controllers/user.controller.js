@@ -77,7 +77,7 @@ export const login = async(req, res) => {
             })
         }
 
-        let user = await User.findOne({email});
+        let user = await User.findOne({email}).lean();
         if(!user){
             return res.status(400).json({
                 success:false,
@@ -94,7 +94,8 @@ export const login = async(req, res) => {
         }
         
         const token = await jwt.sign({userId:user._id}, process.env.SECRET_KEY, { expiresIn: '1d' })
-        const userSafe = await User.findById(user._id).select("-password")
+        const userSafe = { ...user };
+        delete userSafe.password;
         return res.status(200).cookie("token", token, authCookieOptions(1 * 24 * 60 * 60 * 1000)).json({
             success:true,
             message:`Welcome back ${user.firstName}`,
@@ -112,7 +113,7 @@ export const login = async(req, res) => {
 
 export const getMe = async (req, res) => {
     try {
-        const user = await User.findById(req.id).select("-password");
+        const user = await User.findById(req.id).select("-password").lean();
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -193,7 +194,7 @@ export const updateProfile = async(req, res) => {
 
 export const getAllUsers = async (req, res) => {
     try {
-      const users = await User.find().select('-password'); // exclude password field
+      const users = await User.find().select('-password').lean(); // exclude password field
       res.status(200).json({
         success: true,
         message: "User list fetched successfully",

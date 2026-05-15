@@ -40,7 +40,7 @@ export const createComment = async (req, res) => {
 export const getCommentsOfPost = async (req, res) => {
   try {
     const blogId = req.params.id;
-    const comments = await Comment.find({ postId: blogId }).populate({ path: 'userId', select: 'firstName lastName photoUrl' }).sort({ createdAt: -1 })
+    const comments = await Comment.find({ postId: blogId }).populate({ path: 'userId', select: 'firstName lastName photoUrl' }).sort({ createdAt: -1 }).lean();
 
     if (!comments) return res.status(404).json({ message: 'No comments found for this blog', success: false })
     return res.status(200).json({
@@ -68,13 +68,11 @@ export const deleteComment = async (req, res) => {
 
     const blogId = comment.postId;
 
-    // Delete the comment
-    await Comment.findByIdAndDelete(commentId);
-
-    // Remove comment ID from blog's comments array
-    await Blog.findByIdAndUpdate(blogId, {
-      $pull: { comments: commentId }
-    });
+    // Delete the comment and remove comment ID from blog's comments array concurrently
+    await Promise.all([
+      Comment.findByIdAndDelete(commentId),
+      Blog.findByIdAndUpdate(blogId, { $pull: { comments: commentId } })
+    ]);
 
     res.status(200).json({ success: true, message: 'Comment deleted Successfully' });
 
@@ -156,7 +154,7 @@ export const getAllCommentsOnMyBlogs = async (req, res) => {
     const userId = req.id; // assuming you're using auth middleware
 
     // Step 1: Find all blog posts created by the logged-in user
-    const myBlogs = await Blog.find({ author: userId }).select("_id");
+    const myBlogs = await Blog.find({ author: userId }).select("_id").lean();
 
     const blogIds = myBlogs.map(blog => blog._id);
 
@@ -172,7 +170,7 @@ export const getAllCommentsOnMyBlogs = async (req, res) => {
     // Step 2: Find all comments on these blogs
     const comments = await Comment.find({ postId: { $in: blogIds } })
       .populate("userId", "firstName lastName email")
-      .populate("postId", "title");
+      .populate("postId", "title").lean();
 
     res.status(200).json({
       success: true,
