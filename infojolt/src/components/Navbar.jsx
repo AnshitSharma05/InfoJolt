@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
-import Logo from "../assets/logo.png"
+
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
@@ -88,7 +88,7 @@ const Navbar = () => {
                 <div className='flex gap-7 items-center'>
                     <Link to={'/'}>
                         <div className='flex gap-2 items-center'>
-                            <img src={Logo} alt="" className='w-7 h-7 md:w-10 md:h-10 dark:invert' />
+                            <img src="/logo.png" alt="" className='w-7 h-7 md:w-10 md:h-10 dark:invert' />
                             <h1 className='font-bold text-3xl md:text-4xl'>InfoJolt</h1>
                         </div>
                     </Link>
