@@ -2,7 +2,7 @@
 
 InfoJolt is a modern, full-stack blogging platform built with the **MERN** (MongoDB, Express, React, Node.js) stack. It empowers users to create, manage, and share content seamlessly, enhanced with AI-powered capabilities to ensure high-quality writing.
 
-## 🚀 Key Features
+##  Key Features
 
 - **Rich Text Editing:** Create and format beautiful blog posts using the Jodit React rich text editor.
 - **AI-Powered Assistance:** Integrated with Google's Gemini API to provide smart grammar and spelling corrections for blog titles and descriptions.
@@ -12,7 +12,7 @@ InfoJolt is a modern, full-stack blogging platform built with the **MERN** (Mong
 - **Dark/Light Mode:** Full theme support with Redux Persist for saving user preferences.
 - **User Dashboard:** Dedicated dashboards for users to manage their profiles, view their published blogs, and interact with comments.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Framework:** React 19, Vite
@@ -30,7 +30,7 @@ InfoJolt is a modern, full-stack blogging platform built with the **MERN** (Mong
 - **Cloud Storage:** Cloudinary, Multer, DataURI
 - **AI Integration:** Google Generative AI (Gemini API)
 
-## 💻 Installation and Setup
+##  Installation and Setup
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -82,10 +82,3 @@ npm run dev
 
 The application will be available at `http://localhost:5173`.
 
-## 📂 Project Structure
-
-- `/backend`: Contains the Express server, Mongoose models, controllers, and API routes.
-- `/infojolt`: The Vite + React frontend application, containing components, pages, and Redux slices.
-
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
