@@ -1,5 +1,2 @@
-
+backend/node_modules/
 .env
-node_modules/.bin/git-guard
-node_modules/.bin/git-guard.cmd
-node_modules/.bin/git-guard.ps1
