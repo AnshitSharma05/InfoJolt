@@ -3,6 +3,7 @@ import Signup from './pages/Signup'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import ForgotPassword from './pages/ForgotPassword'
 import Navbar from './components/Navbar'
 import Profile from './pages/Profile'
 import Blog from './pages/Blog'
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <><Navbar/><GuestRoute><Login /></GuestRoute></>
+  },
+  {
+    path: "/forgot-password",
+    element: <><Navbar/><GuestRoute><ForgotPassword /></GuestRoute></>
   },
 ])
 

@@ -3,22 +3,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/authSlice";
+import { Eye, EyeOff } from "lucide-react";
 import auth from "../assets/auth.jpg"
 import { API_BASE_URL } from "@/config/api";
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate()
-  const location = useLocation()
-  const dispatch = useDispatch()
   const [input, setInput] = useState({
     email: "",
-    password: "",
+    newPassword: "",
   });
 
   const handleChange = (e) => {
@@ -31,32 +27,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/v1/user/login`, input, {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/user/reset-password`, input, {
         headers: {
           "Content-Type": "application/json"
-        },
-        withCredentials: true
+        }
       });
       if (response.data.success) {
-        const redirectTo = location.state?.from?.pathname || "/";
-        navigate(redirectTo, { replace: true })
-        dispatch(setUser(response.data.user))
         toast.success(response.data.message)
+        navigate('/login')
       }
     } catch (error) {
       const message =
         error?.response?.data?.message ||
         error?.message ||
-        "Login failed";
-      console.log("Login error:", error);
+        "Password reset failed";
+      console.log("Reset password error:", error);
       toast.error(message);
-
     }
-
   };
+
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="flex items-center h-screen md:pt-14 md:h-[760px] ">
@@ -66,8 +57,8 @@ const Login = () => {
       <div className='flex justify-center items-center flex-1 px-4 md:px-0'>
       <Card className="w-full max-w-md p-6 shadow-lg rounded-2xl dark:bg-gray-800 dark:border-gray-600">
         <CardHeader>
-          <CardTitle className="text-center text-xl font-semibold">Login into your account</CardTitle>
-          <p className='text-gray-600 dark:text-gray-300 mt-2 text-sm font-serif text-center'>Enter your details below to login your account</p>
+          <CardTitle className="text-center text-xl font-semibold">Reset Password</CardTitle>
+          <p className='text-gray-600 dark:text-gray-300 mt-2 text-sm font-serif text-center'>Enter your email and new password</p>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -83,11 +74,11 @@ const Login = () => {
             </div>
 
             <div className="relative">
-              <Label>Password</Label>
+              <Label>New Password</Label>
               <Input type={showPassword ? "text" : "password"}
-                placeholder="Enter Your Password"
-                name="password"
-                value={input.password}
+                placeholder="Enter New Password"
+                name="newPassword"
+                value={input.newPassword}
                 onChange={handleChange}
                 className="dark:border-gray-600 dark:bg-gray-900"
               />
@@ -100,12 +91,8 @@ const Login = () => {
               </button>
             </div>
 
-            <div className="text-right">
-              <Link to={'/forgot-password'} className="text-sm text-blue-600 hover:underline">Forgot Password?</Link>
-            </div>
-
-            <Button type="submit" className="w-full">Login</Button>
-            <p className='text-center text-gray-600 dark:text-gray-300'>Don't have an account? <Link to={'/signup'}><span className='underline cursor-pointer hover:text-gray-800'>Sign up</span></Link></p>
+            <Button type="submit" className="w-full">Reset Password</Button>
+            <p className='text-center text-gray-600 dark:text-gray-300'>Remember your password? <Link to={'/login'}><span className='underline cursor-pointer hover:text-gray-800'>Login</span></Link></p>
           </form>
         </CardContent>
       </Card>
@@ -114,4 +101,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ForgotPassword
