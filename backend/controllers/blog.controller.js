@@ -194,3 +194,23 @@ export const aiCorrectBlog = async (req, res) => {
         res.status(500).json({ success: false, message: "Failed to correct content using AI: " + error.message });
     }
 };
+
+export const getSingleBlog = async (req, res) => {
+    try {
+        const { blogId } = req.params;
+        const blog = await Blog.findById(blogId).populate({
+            path: 'author',
+            select: 'firstName lastName photoUrl occupation'
+        }).populate({
+            path: 'comments',
+            sort: { createdAt: -1 },
+            populate: { path: 'userId', select: 'firstName lastName photoUrl' }
+        });
+        if (!blog) {
+            return res.status(404).json({ success: false, message: "Blog not found!" });
+        }
+        return res.status(200).json({ success: true, blog });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Error fetching blog details", error: error.message });
+    }
+};

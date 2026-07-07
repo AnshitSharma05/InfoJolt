@@ -27,12 +27,44 @@ const BlogView = () => {
     const blogId = params.blogId
     const { blog } = useSelector(store => store.blog)
     const { user } = useSelector(store => store.auth)
-    const selectedBlog = blog.find(blog => blog._id === blogId)
-    const [blogLike, setBlogLike] = useState(selectedBlog?.likes.length)
     const { comment } = useSelector(store => store.comment)
-    const [liked, setLiked] = useState(selectedBlog?.likes.includes(user?._id) || false);
     const dispatch = useDispatch()
-    console.log(selectedBlog);
+
+    const initialBlog = blog.find(b => b._id === blogId) || null;
+    const [selectedBlog, setSelectedBlog] = useState(initialBlog)
+    const [blogLike, setBlogLike] = useState(initialBlog?.likes?.length || 0)
+    const [liked, setLiked] = useState(initialBlog?.likes?.includes(user?._id) || false);
+    const [loading, setLoading] = useState(!initialBlog)
+
+    useEffect(() => {
+        window.scrollTo(0,0)
+        const fetchSingleBlog = async () => {
+            try {
+                const res = await axios.get(`${API_BASE_URL}/api/v1/blog/${blogId}`, { withCredentials: true })
+                if (res.data.success) {
+                    const fetchedBlog = res.data.blog;
+                    setSelectedBlog(fetchedBlog);
+                    setBlogLike(fetchedBlog.likes?.length || 0);
+                    setLiked(fetchedBlog.likes?.includes(user?._id) || false);
+
+                    let updatedBlogData;
+                    if (blog.some(b => b._id === fetchedBlog._id)) {
+                        updatedBlogData = blog.map(b => b._id === fetchedBlog._id ? fetchedBlog : b);
+                    } else {
+                        updatedBlogData = [fetchedBlog, ...blog];
+                    }
+                    dispatch(setBlog(updatedBlogData));
+                }
+            } catch (error) {
+                console.error("Error fetching blog details:", error);
+                toast.error(error.response?.data?.message || "Failed to fetch blog details");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchSingleBlog();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [blogId, user?._id, dispatch]);
 
     const likeOrDislikeHandler = async () => {
         try {
@@ -43,7 +75,6 @@ const BlogView = () => {
                 setBlogLike(updatedLikes);
                 setLiked(!liked)
 
-                //apne blog ko update krunga
                 const updatedBlogData = blog.map(p =>
                     p._id === selectedBlog._id ? {
                         ...p,
@@ -61,20 +92,13 @@ const BlogView = () => {
     }
 
     const changeTimeFormat = (isoDate) => {
+        if (!isoDate) return "";
         const date = new Date(isoDate);
         const options = { day: 'numeric', month: 'long', year: 'numeric' };
         const formattedDate = date.toLocaleDateString('en-GB', options);
         return formattedDate
     }
 
-    // const handleShare = (blogId) => {
-    //     const blogUrl = `${window.location.origin}/blogs/${blogId}`;
-    //     navigator.clipboard.writeText(blogUrl).then(() => {
-    //         toast.success('Blog link copied to clipboard!');
-    //     }).catch((err) => {
-    //         console.error('Failed to copy:', err);
-    //     });
-    // };
     const handleShare = (blogId) => {
         const blogUrl = `${window.location.origin}/blogs/${blogId}`;
       
@@ -88,16 +112,27 @@ const BlogView = () => {
             .then(() => console.log('Shared successfully'))
             .catch((err) => console.error('Error sharing:', err));
         } else {
-          // fallback: copy to clipboard
           navigator.clipboard.writeText(blogUrl).then(() => {
             toast.success('Blog link copied to clipboard!');
           });
         }
       };
 
-      useEffect(()=>{
-        window.scrollTo(0,0)
-      },[])
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-lg font-medium">Loading blog...</p>
+            </div>
+        );
+    }
+
+    if (!selectedBlog) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-lg font-medium text-red-500">Blog not found</p>
+            </div>
+        );
+    }
     return (
         <div className='pt-14'>
             <div className='max-w-6xl mx-auto p-10'>
@@ -124,12 +159,12 @@ const BlogView = () => {
                     <div className="flex items-center justify-between flex-wrap gap-4">
                         <div className="flex items-center space-x-4">
                             <Avatar>
-                                <AvatarImage src={selectedBlog.author.photoUrl} alt="Author" />
+                                <AvatarImage src={selectedBlog.author?.photoUrl} alt="Author" />
                                 <AvatarFallback>JD</AvatarFallback>
                             </Avatar>
                             <div>
-                                <p className="font-medium">{selectedBlog.author.firstName} {selectedBlog.author.lastName}</p>
-                                <p className="text-sm text-muted-foreground">{selectedBlog.author.occupation}</p>
+                                <p className="font-medium">{selectedBlog.author?.firstName} {selectedBlog.author?.lastName}</p>
+                                <p className="text-sm text-muted-foreground">{selectedBlog.author?.occupation}</p>
                             </div>
                         </div>
                         <div className="text-sm text-muted-foreground">Published on {changeTimeFormat(selectedBlog.createdAt)} • 8 min read</div>

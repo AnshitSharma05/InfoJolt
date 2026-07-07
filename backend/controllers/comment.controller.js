@@ -49,8 +49,8 @@ export const getCommentsOfPost = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    if (!comments || comments.length === 0) {
-      return res.status(404).json({ message: 'No comments found for this blog', success: false });
+    if (!comments) {
+      return res.status(200).json({ success: true, comments: [] });
     }
 
     return res.status(200).json({ success: true, comments });

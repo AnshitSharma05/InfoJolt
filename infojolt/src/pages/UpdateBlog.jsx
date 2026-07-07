@@ -32,16 +32,52 @@ const UpdateBlog = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { blog } = useSelector(store => store.blog)
-    const selectBlog = blog.find(blog => blog._id === id)
-    const [content, setContent] = useState(selectBlog.description);
+    const selectBlog = blog.find(blog => blog._id === id) || null;
+    const [content, setContent] = useState(selectBlog?.description || "");
 
     const [blogData, setBlogData] = useState({
-        title: selectBlog?.title,
-        subtitle: selectBlog?.subtitle,
-        description: content,
-        category: selectBlog?.category,
+        title: selectBlog?.title || "",
+        subtitle: selectBlog?.subtitle || "",
+        description: selectBlog?.description || "",
+        category: selectBlog?.category || "",
     });
-    const [previewThumbnail, setPreviewThumbnail] = useState(selectBlog?.thumbnail);
+    const [previewThumbnail, setPreviewThumbnail] = useState(selectBlog?.thumbnail || "");
+    const [loadingDetails, setLoadingDetails] = useState(!selectBlog);
+
+    useEffect(() => {
+        const fetchBlogDetails = async () => {
+            try {
+                const res = await axios.get(`${API_BASE_URL}/api/v1/blog/${id}`, { withCredentials: true });
+                if (res.data.success) {
+                    const b = res.data.blog;
+                    setContent(b.description || "");
+                    setBlogData({
+                        title: b.title || "",
+                        subtitle: b.subtitle || "",
+                        description: b.description || "",
+                        category: b.category || "",
+                    });
+                    setPreviewThumbnail(b.thumbnail || "");
+
+                    let updatedBlogData;
+                    if (blog.some(item => item._id === b._id)) {
+                        updatedBlogData = blog.map(item => item._id === b._id ? b : item);
+                    } else {
+                        updatedBlogData = [b, ...blog];
+                    }
+                    dispatch(setBlog(updatedBlogData));
+                }
+            } catch (error) {
+                console.error("Error fetching blog details:", error);
+                toast.error(error.response?.data?.message || "Failed to fetch blog details");
+            } finally {
+                setLoadingDetails(false);
+            }
+        };
+
+        fetchBlogDetails();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, dispatch]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +102,6 @@ const UpdateBlog = () => {
     };
 
     const updateBlogHandler = async () => {
-
         const formData = new FormData();
         formData.append("title", blogData.title || "");
         formData.append("subtitle", blogData.subtitle || "");
@@ -85,14 +120,13 @@ const UpdateBlog = () => {
             })
             if (res.data.success) {
                 toast.success(res.data.message)
-                // dispatch([...course, setCourse(res.data.course)])
-                console.log(blogData);
-
-
+                const updatedBlog = res.data.blog;
+                const updatedBlogData = blog.map(b => b._id === id ? updatedBlog : b);
+                dispatch(setBlog(updatedBlogData));
             }
         } catch (error) {
             console.log(error);
-
+            toast.error(error.response?.data?.message || "Error updating blog")
         } finally {
             setLoading(false)
         }
@@ -159,6 +193,26 @@ const UpdateBlog = () => {
             toast.error("something went error")
         }
 
+    }
+
+    if (loadingDetails) {
+        return (
+            <div className='pb-10 px-3 pt-20 md:ml-[320px]'>
+                <div className='max-w-6xl mx-auto mt-8 text-center text-lg font-medium'>
+                    Loading blog details...
+                </div>
+            </div>
+        );
+    }
+
+    if (!selectBlog) {
+        return (
+            <div className='pb-10 px-3 pt-20 md:ml-[320px]'>
+                <div className='max-w-6xl mx-auto mt-8 text-center text-lg font-medium text-red-500'>
+                    Blog not found
+                </div>
+            </div>
+        );
     }
 
     return (

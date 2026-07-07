@@ -173,22 +173,30 @@ const CommentBox = ({ selectedBlog }) => {
 
     return (
         <div>
-            <div className='flex gap-4 mb-4 items-center'>
-                <Avatar>
-                    <AvatarImage src={user.photoUrl} />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <h3 className='font-semibold'>{user.firstName} {user.lastName}</h3>
-            </div>
-            <div className='flex gap-3'>
-                <Textarea
-                    placeholder="Leave a comment"
-                    className="bg-gray-100 dark:bg-gray-800"
-                    onChange={changeEventHandler}
-                    value={content}
-                />
-                <Button onClick={commentHandler}><LuSend /></Button>
-            </div>
+            {user ? (
+                <>
+                    <div className='flex gap-4 mb-4 items-center'>
+                        <Avatar>
+                            <AvatarImage src={user?.photoUrl} />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                        <h3 className='font-semibold'>{user?.firstName} {user?.lastName}</h3>
+                    </div>
+                    <div className='flex gap-3'>
+                        <Textarea
+                            placeholder="Leave a comment"
+                            className="bg-gray-100 dark:bg-gray-800"
+                            onChange={changeEventHandler}
+                            value={content}
+                        />
+                        <Button onClick={commentHandler}><LuSend /></Button>
+                    </div>
+                </>
+            ) : (
+                <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md text-center">
+                    <p className="text-muted-foreground text-sm">Please log in to leave a comment.</p>
+                </div>
+            )}
             {
                 comment.length > 0 ? <div className='mt-7 bg-gray-100 dark:bg-gray-800 p-5 rounded-md'>
                     {
@@ -217,35 +225,31 @@ const CommentBox = ({ selectedBlog }) => {
                                             ) : (
                                                 <p className=''>{item?.content}</p>
                                             )}
-                                            {/* <p className=''>{item.content}</p> */}
                                             <div className='flex gap-5 items-center'>
                                                 <div className='flex gap-2 items-center'>
                                                     <div
                                                         className='flex gap-1 items-center cursor-pointer'
-                                                        onClick={() => likeCommentHandler(item._id)}
+                                                        onClick={() => user && likeCommentHandler(item._id)}
                                                     >
                                                         {
-                                                            item.likes.includes(user._id)
+                                                            user && item.likes.includes(user._id)
                                                                 ? <FaHeart fill='red' />
                                                                 : <FaRegHeart />
                                                         }
                                                         <span>{item.numberOfLikes}</span>
                                                     </div>
-
+ 
                                                 </div>
-                                                {/* <div className='flex gap-2 items-center'>
-                                                <FaRegComment /> <span>5</span>
-                                            </div> */}
-                                                <p onClick={() => handleReplyClick(item._id)} className='text-sm cursor-pointer'>Reply</p>
-
-
+                                                {user && (
+                                                    <p onClick={() => handleReplyClick(item._id)} className='text-sm cursor-pointer'>Reply</p>
+                                                )}
+ 
                                             </div>
-
+ 
                                         </div>
                                     </div>
-                                    {/* <Button><Trash2/></Button> */}
                                     {
-                                        user._id === item?.userId?._id ? <DropdownMenu>
+                                        user && user._id === item?.userId?._id ? <DropdownMenu>
                                             <DropdownMenuTrigger><BsThreeDots /></DropdownMenuTrigger>
                                             <DropdownMenuContent className="w-[180px]">
                                                 <DropdownMenuItem onClick={() => {
